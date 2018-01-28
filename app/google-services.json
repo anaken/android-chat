@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "848542317069",
+    "firebase_url": "https://testapp-7e45b.firebaseio.com",
+    "project_id": "testapp-7e45b",
+    "storage_bucket": "testapp-7e45b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:848542317069:android:0d986886f7fb2b1a",
+        "android_client_info": {
+          "package_name": "biz.mesto.anaken"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "848542317069-cb8jojrkn3j6dbjg883kf1i3pita1iin.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "848542317069-pvduhf8g7g9pm6bhrap8bba2a8vpcr72.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCj17wb5VUU2SrFaozl1g6GlQrhN5Pc-Co"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

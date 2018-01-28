@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">TestApp</string>
+    <string name="default_notification_channel_id">fcm_default_channel</string>
+
+    <!-- fragment_login -->
+    <string name="f_login__login_hint">Ваше имя</string>
+    <string name="f_login__enter">Войти</string>
+    <string name="f_chat__send">Отправить</string>
+    <string name="f_chat__text_hint">Введите сообщение</string>
+</resources>
