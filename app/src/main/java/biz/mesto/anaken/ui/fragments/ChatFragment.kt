@@ -29,13 +29,16 @@ class ChatFragment: BaseFragment<ChatPresenter>(), ChatView, BackPressListener {
     private var messagesAdapter: ChatMessageAdapter? = null
 
     lateinit var username: String
+    var flat: String? = null
 
     companion object {
         private const val KEY_USERNAME = "username"
+        private const val KEY_FLAT = "flat"
 
-        fun newInstance(username: String): ChatFragment {
+        fun newInstance(username: String, flat : String?): ChatFragment {
             val it = ChatFragment()
             it.username = username
+            it.flat = flat
             return it
         }
     }
@@ -54,15 +57,19 @@ class ChatFragment: BaseFragment<ChatPresenter>(), ChatView, BackPressListener {
     override fun onInitViews(state: Bundle?) {
         state?.let {
             username = it.getString(KEY_USERNAME)
+            flat = it.getString(KEY_FLAT)
         }
+
         presenter.view = this
+        presenter.init(username, flat)
+
         messagesAdapter = ChatMessageAdapter(mutableListOf())
         f_chat__messages.layoutManager = LinearLayoutManager(activity!!.application,
                 LinearLayoutManager.VERTICAL, false)
         f_chat__messages.adapter = messagesAdapter
 
         f_chat__btn_send.setOnClickListener{
-            presenter.sendMessage(username, f_chat__text.text.toString())
+            presenter.sendMessage(f_chat__text.text.toString())
             f_chat__text.text.clear()
         }
     }
@@ -82,7 +89,9 @@ class ChatFragment: BaseFragment<ChatPresenter>(), ChatView, BackPressListener {
 
     override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
         dataSnapshot.children
-                .map { it.getValue<ChatMessage>(ChatMessage::class.java) }
+                .map {
+                    it.getValue<ChatMessage>(ChatMessage::class.java)
+                }
                 .forEach { chatMessage -> chatMessage.let { messagesAdapter?.addMessage(it!!) } }
         scrollToBottom()
     }
@@ -98,6 +107,7 @@ class ChatFragment: BaseFragment<ChatPresenter>(), ChatView, BackPressListener {
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putString(KEY_USERNAME, username)
+        flat?.let { outState.putString(KEY_FLAT, flat) }
         super.onSaveInstanceState(outState)
     }
 

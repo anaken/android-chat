@@ -11,7 +11,7 @@ class LoginPresenter @Inject constructor(): BasePresenter() {
 
     var view: LoginView? = null
 
-    fun doLogin(username : String) {
-        view?.onLoginSuccess(username)
+    fun doLogin(username : String, flat: String?) {
+        view?.onLoginSuccess(username, flat)
     }
 }

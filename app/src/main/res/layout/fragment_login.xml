@@ -18,6 +18,12 @@
             android:layout_height="wrap_content"
             android:hint="@string/f_login__login_hint"/>
 
+        <EditText
+            android:id="@+id/f_login__flat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/f_login__flat_hint"/>
+
         <Button
             android:id="@+id/f_login__btn_login"
             android:layout_width="match_parent"

@@ -29,7 +29,7 @@ class LoginFragment : BaseFragment<LoginPresenter>(), LoginView {
     }
 
     interface LoginRouter {
-        fun goChat(username: String)
+        fun goChat(username: String, flat : String?)
     }
 
     override fun onAttach(context: Context?) {
@@ -43,19 +43,20 @@ class LoginFragment : BaseFragment<LoginPresenter>(), LoginView {
         presenter.view = this
         f_login__btn_login.setOnClickListener{
             val username = f_login__name.text.toString()
+            val flat = f_login__flat.text.toString()
             if (username.isNotEmpty()) {
-                presenter.doLogin(username)
+                presenter.doLogin(username, flat)
             }
         }
     }
 
-    override fun onLoginSuccess(username : String) {
+    override fun onLoginSuccess(username : String, flat : String?) {
         Toast.makeText(activity, "Добро пожаловать $username!", Toast.LENGTH_SHORT).show()
-        goChat(username)
+        goChat(username, flat)
     }
 
-    override fun goChat(username: String) {
-        router?.goChat(username)
+    override fun goChat(username: String, flat : String?) {
+        router?.goChat(username, flat)
     }
 
     override fun onInject() {

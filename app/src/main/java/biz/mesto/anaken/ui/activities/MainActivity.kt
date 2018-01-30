@@ -15,16 +15,19 @@ class MainActivity : BaseActivity(), LoginFragment.LoginRouter, ChatFragment.Cha
     var mainComponent: MainComponent? = null
 
     var username: String? = null
+    var flat: String? = null
 
     companion object {
         private const val FRAGMENT_PLACEHOLDER = R.id.a_main__placeholder
         private const val KEY_USERNAME = "username"
+        private const val KEY_FLAT = "flat"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         username = savedInstanceState?.getString(KEY_USERNAME)
+        flat = savedInstanceState?.getString(KEY_FLAT)
 
         if (username == null) {
             goLogin()
@@ -47,16 +50,19 @@ class MainActivity : BaseActivity(), LoginFragment.LoginRouter, ChatFragment.Cha
 
     override fun goLogin() {
         username = null
+        flat = null
         goFragment(FRAGMENT_PLACEHOLDER, LoginFragment.newInstance())
     }
 
-    override fun goChat(username: String) {
+    override fun goChat(username: String, flat : String?) {
         this.username = username
-        goFragment(FRAGMENT_PLACEHOLDER, ChatFragment.newInstance(username))
+        this.flat = flat
+        goFragment(FRAGMENT_PLACEHOLDER, ChatFragment.newInstance(username, flat))
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
         outState?.putString(KEY_USERNAME, username)
+        outState?.putString(KEY_FLAT, flat)
         super.onSaveInstanceState(outState)
     }
 }

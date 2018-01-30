@@ -18,21 +18,42 @@ class ChatPresenter @Inject constructor(
         private val firebaseAuth: FirebaseAuth
 ) : BasePresenter() {
 
+    companion object {
+        const val CHAT_SECRET : String = "WKt73HdS9pkyUU"
+        const val DEFAULT_CHAT : String = "chat"
+    }
+
     var view: ChatView? = null
 
-    fun sendMessage(username: String, message: String) {
+    lateinit var username: String
+    private var flat: String? = DEFAULT_CHAT
+
+    fun init(username: String, flat: String? = DEFAULT_CHAT) {
+        this.username = username
+        this.flat = if (flat.isNullOrEmpty()) DEFAULT_CHAT else flat
+    }
+
+    override fun onStart() {
+        firebaseDatabase.reference
+                .child( flat )
+                .addChildEventListener( view )
+    }
+
+    fun sendMessage(message: String) {
         val chatMessage = ChatMessage(
                 username = username,
                 message = message,
                 time = DateTime.now(DateTimeZone.getDefault()).millis
         )
         firebaseDatabase.reference
-                .child("chat")
+                .child( flat + "/" + CHAT_SECRET )
                 .push()
                 .setValue(chatMessage)
     }
 
     override fun onDestroy() {
-        firebaseDatabase.reference.removeEventListener( view as ChildEventListener )
+        firebaseDatabase.reference
+                .child( flat )
+                .removeEventListener( view as ChildEventListener )
     }
 }

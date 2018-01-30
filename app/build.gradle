@@ -50,8 +50,6 @@ dependencies {
     testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
 
     androidTestCompile "com.android.support:support-annotations:$rootProject.ext.supportLibraryVersion"
-    androidTestCompile 'com.android.support.test:runner:0.5'
-    androidTestCompile 'com.android.support.test:rules:0.5'
 
     compile 'com.tbruyelle.rxpermissions:rxpermissions:0.9.0@aar'
 
@@ -67,8 +65,6 @@ dependencies {
     compile "com.google.dagger:dagger-android-support:$rootProject.ext.daggerVersion"
     provided 'javax.annotation:jsr250-api:1.0'
 
-    compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
-
     compile 'com.google.firebase:firebase-messaging:11.8.0'
     compile 'com.firebase:firebase-jobdispatcher:0.8.5'
 
@@ -82,14 +78,8 @@ dependencies {
     compile "com.google.firebase:firebase-database:$rootProject.ext.googlePlayVersion"
     compile "com.google.firebase:firebase-auth:$rootProject.ext.googlePlayVersion"
 
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
-
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.google.android:flexbox:0.2.5'
-
-    compile 'io.card:android-sdk:5.5.1'
 }
 
 apply plugin: 'com.google.gms.google-services'
