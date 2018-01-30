@@ -4,14 +4,13 @@ import android.os.Bundle
 import biz.mesto.anaken.R
 import biz.mesto.anaken.di.main.MainComponent
 import biz.mesto.anaken.di.main.MainModule
-import biz.mesto.anaken.mvp.routers.MainRouter
 import biz.mesto.anaken.ui.Layout
 import biz.mesto.anaken.ui.fragments.BackPressListener
 import biz.mesto.anaken.ui.fragments.ChatFragment
 import biz.mesto.anaken.ui.fragments.LoginFragment
 
 @Layout(id = R.layout.activity_main)
-class MainActivity : BaseActivity(), MainRouter {
+class MainActivity : BaseActivity(), LoginFragment.LoginRouter, ChatFragment.ChatRouter {
 
     var mainComponent: MainComponent? = null
 
@@ -24,6 +23,8 @@ class MainActivity : BaseActivity(), MainRouter {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        username = savedInstanceState?.getString(KEY_USERNAME)
 
         if (username == null) {
             goLogin()
@@ -40,7 +41,7 @@ class MainActivity : BaseActivity(), MainRouter {
     }
 
     override fun onInject() {
-        mainComponent = getAppComponent().addMainComponent(MainModule(this))
+        mainComponent = getAppComponent().addMainComponent(MainModule())
         mainComponent?.inject(this)
     }
 
@@ -57,10 +58,5 @@ class MainActivity : BaseActivity(), MainRouter {
     override fun onSaveInstanceState(outState: Bundle?) {
         outState?.putString(KEY_USERNAME, username)
         super.onSaveInstanceState(outState)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
-        super.onRestoreInstanceState(savedInstanceState)
-        username = savedInstanceState?.getString(KEY_USERNAME)
     }
 }

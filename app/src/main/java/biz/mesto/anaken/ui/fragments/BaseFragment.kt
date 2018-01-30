@@ -27,7 +27,7 @@ abstract class BaseFragment<T : BasePresenter> : Fragment() {
     /**
      * Вызывает метод настройки отображения
      */
-    protected abstract fun onInitViews()
+    protected abstract fun onInitViews(state: Bundle?)
 
     /**
      * Возвращает компонент графа зависимостей
@@ -37,6 +37,8 @@ abstract class BaseFragment<T : BasePresenter> : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        onInject()
+
         // Установка лэйаута из аннотации
         val cls = javaClass
         if (!cls.isAnnotationPresent(Layout::class.java)) {
@@ -49,13 +51,7 @@ abstract class BaseFragment<T : BasePresenter> : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        onInitViews()
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        onInject()
+        onInitViews(savedInstanceState)
     }
 
     override fun onStart() {
@@ -68,5 +64,10 @@ abstract class BaseFragment<T : BasePresenter> : Fragment() {
         super.onStop()
 
         presenter.onStop()
+    }
+
+    override fun onDestroy() {
+        presenter.onDestroy()
+        super.onDestroy()
     }
 }

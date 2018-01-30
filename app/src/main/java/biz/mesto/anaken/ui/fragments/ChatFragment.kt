@@ -1,7 +1,8 @@
 package biz.mesto.anaken.ui.fragments
 
+import android.content.Context
+import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import biz.mesto.anaken.R
 import biz.mesto.anaken.di.main.chat.ChatComponent
 import biz.mesto.anaken.di.main.chat.ChatModule
@@ -23,11 +24,15 @@ class ChatFragment: BaseFragment<ChatPresenter>(), ChatView, BackPressListener {
 
     private var chatComponent: ChatComponent? = null
 
+    private var router: ChatRouter? = null
+
     private var messagesAdapter: ChatMessageAdapter? = null
 
     lateinit var username: String
 
     companion object {
+        private const val KEY_USERNAME = "username"
+
         fun newInstance(username: String): ChatFragment {
             val it = ChatFragment()
             it.username = username
@@ -35,8 +40,22 @@ class ChatFragment: BaseFragment<ChatPresenter>(), ChatView, BackPressListener {
         }
     }
 
-    override fun onInitViews() {
-        Log.d("TAG", "INITED CHAT")
+    interface ChatRouter {
+        fun goLogin()
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        if (context is ChatRouter) {
+            router = context
+        }
+    }
+
+    override fun onInitViews(state: Bundle?) {
+        state?.let {
+            username = it.getString(KEY_USERNAME)
+        }
+        presenter.view = this
         messagesAdapter = ChatMessageAdapter(mutableListOf())
         f_chat__messages.layoutManager = LinearLayoutManager(activity!!.application,
                 LinearLayoutManager.VERTICAL, false)
@@ -54,16 +73,7 @@ class ChatFragment: BaseFragment<ChatPresenter>(), ChatView, BackPressListener {
         chatComponent?.inject(this)
     }
 
-    private fun scrollToBottom() {
-        f_chat__messages.scrollToPosition(messagesAdapter!!.itemCount - 1)
-    }
-
-    override fun onCancelled(p0: DatabaseError?) { Log.d("ChatFragment", "onCancelled") }
-
-    override fun onChildMoved(p0: DataSnapshot?, p1: String?) { Log.d("ChatFragment", "onChildMoved") }
-
     override fun onChildChanged(dataSnapshot: DataSnapshot?, s: String?) {
-        Log.d("ChatFragment", "onChildChanged")
         val setMessages = dataSnapshot?.children
                 ?.map { it.getValue<ChatMessage>(ChatMessage::class.java) }
         messagesAdapter?.setMessages(setMessages)
@@ -71,17 +81,29 @@ class ChatFragment: BaseFragment<ChatPresenter>(), ChatView, BackPressListener {
     }
 
     override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
-        Log.d("ChatFragment", "onChildAdded")
         dataSnapshot.children
                 .map { it.getValue<ChatMessage>(ChatMessage::class.java) }
                 .forEach { chatMessage -> chatMessage.let { messagesAdapter?.addMessage(it!!) } }
         scrollToBottom()
     }
 
-    override fun onChildRemoved(p0: DataSnapshot?) { }
+    private fun scrollToBottom() {
+        f_chat__messages.scrollToPosition(messagesAdapter!!.itemCount - 1)
+    }
 
     override fun onBackPressed(): Boolean {
-        presenter.goLogin()
+        router?.goLogin()
         return true
     }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putString(KEY_USERNAME, username)
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onCancelled(p0: DatabaseError?) { }
+
+    override fun onChildMoved(p0: DataSnapshot?, p1: String?) { }
+
+    override fun onChildRemoved(p0: DataSnapshot?) { }
 }

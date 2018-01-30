@@ -1,5 +1,7 @@
 package biz.mesto.anaken.ui.fragments
 
+import android.content.Context
+import android.os.Bundle
 import android.widget.Toast
 import biz.mesto.anaken.R
 import biz.mesto.anaken.di.main.login.LoginComponent
@@ -18,13 +20,27 @@ class LoginFragment : BaseFragment<LoginPresenter>(), LoginView {
 
     private var loginComponent : LoginComponent? = null
 
+    private var router : LoginRouter? = null
+
     companion object {
         fun newInstance(): LoginFragment {
             return LoginFragment()
         }
     }
 
-    override fun onInitViews() {
+    interface LoginRouter {
+        fun goChat(username: String)
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        if (context is LoginRouter) {
+            router = context
+        }
+    }
+
+    override fun onInitViews(state: Bundle?) {
+        presenter.view = this
         f_login__btn_login.setOnClickListener{
             val username = f_login__name.text.toString()
             if (username.isNotEmpty()) {
@@ -35,6 +51,11 @@ class LoginFragment : BaseFragment<LoginPresenter>(), LoginView {
 
     override fun onLoginSuccess(username : String) {
         Toast.makeText(activity, "Добро пожаловать $username!", Toast.LENGTH_SHORT).show()
+        goChat(username)
+    }
+
+    override fun goChat(username: String) {
+        router?.goChat(username)
     }
 
     override fun onInject() {

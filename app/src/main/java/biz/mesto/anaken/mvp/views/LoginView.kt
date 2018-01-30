@@ -6,4 +6,6 @@ package biz.mesto.anaken.mvp.views
 interface LoginView {
 
     fun onLoginSuccess(username : String)
+
+    fun goChat(username: String)
 }

@@ -5,7 +5,9 @@ package biz.mesto.anaken.mvp.presenters
  */
 abstract class BasePresenter {
 
-    abstract fun onStart()
+    open fun onStart() { }
 
-    abstract fun onStop()
+    open fun onStop() { }
+
+    open fun onDestroy() { }
 }

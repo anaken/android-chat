@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity
 import biz.mesto.anaken.App
 import biz.mesto.anaken.di.AppComponent
 import biz.mesto.anaken.ui.Layout
-import biz.mesto.anaken.ui.fragments.BackPressListener
 
 /**
  * Created by Yury Korobeynikov on 27.01.2018.
